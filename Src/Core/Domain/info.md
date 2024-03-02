@@ -1,0 +1,1 @@
+contain all entitys logic enums exceptions and anouther info from domain 

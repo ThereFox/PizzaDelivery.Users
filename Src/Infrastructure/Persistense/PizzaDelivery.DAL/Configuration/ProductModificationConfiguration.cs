@@ -39,5 +39,12 @@ public class ProductModificationConfiguration : IEntityTypeConfiguration<Product
         .Property(ex => ex.Name)
         .HasColumnType("varchar");
 
+        builder
+        .HasMany(ex => ex.AvaliableForProducts)
+        .WithOne(ex => ex.Modification)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.ModificationId)
+        .OnDelete(DeleteBehavior.SetNull);
+
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,9 @@ using PizzaDelivery.DAL.TableEntitys;
 
 namespace PizzaDelivery.DAL.Configuration;
 
-public class IngridientsConfiguration : IEntityTypeConfiguration<Ingridients>
+public class OrderStatusConfiguration : IEntityTypeConfiguration<OrderStatus>
 {
-    public void Configure(EntityTypeBuilder<Ingridients> builder)
+    public void Configure(EntityTypeBuilder<OrderStatus> builder)
     {
         builder
         .HasKey(ex => ex.Id);
@@ -26,17 +25,14 @@ public class IngridientsConfiguration : IEntityTypeConfiguration<Ingridients>
         .HasColumnType("varchar");
 
         builder
-        .HasMany(ex => ex.ProductIngridients)
-        .WithOne(ex => ex.Ingridient)
-        .HasPrincipalKey(ex => ex.Id)
-        .HasForeignKey(ex => ex.IngridientId)
-        .OnDelete(DeleteBehavior.SetNull);
+        .Property(ex => ex.isEnded)
+        .HasColumnType("boolean");
 
         builder
-        .HasMany(ex => ex.ModificationsWithThisIngridients)
-        .WithOne(ex => ex.Ingridient)
+        .HasMany(ex => ex.OrdersWithThisStatus)
+        .WithOne(ex => ex.Status)
         .HasPrincipalKey(ex => ex.Id)
-        .HasForeignKey(ex => ex.IngridientId)
+        .HasForeignKey(ex => ex.StatusId)
         .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -33,6 +33,20 @@ public class CustomersConfiguration : IEntityTypeConfiguration<Customers>
         .HasColumnType("byte");
 
         builder
+        .HasMany(ex => ex.Tokens)
+        .WithOne(ex => ex.Customer)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.OwnerId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+        .HasMany(ex => ex.Orders)
+        .WithOne(ex => ex.Customer)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.CustomerId)
+        .OnDelete(DeleteBehavior.SetNull);
+
+        builder
         .HasOne(ex => ex.DefaultAddres)
         .WithMany(ex => ex.UsersWithThisAddresAsDefault)
         .HasPrincipalKey(ex => ex.Id)

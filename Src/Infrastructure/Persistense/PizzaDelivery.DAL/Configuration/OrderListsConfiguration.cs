@@ -34,5 +34,12 @@ public class OrderListsConfiguration : IEntityTypeConfiguration<OrderLists>
         .HasForeignKey(ex => ex.Id)
         .OnDelete(DeleteBehavior.SetNull);
 
+        builder
+        .HasMany(ex => ex.Modifications)
+        .WithOne(ex => ex.OrderList)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.OrderId)
+        .OnDelete(DeleteBehavior.SetNull);
+
     }
 }

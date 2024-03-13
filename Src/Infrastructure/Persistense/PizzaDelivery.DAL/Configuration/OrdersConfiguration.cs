@@ -53,5 +53,19 @@ public class OrdersConfiguration : IEntityTypeConfiguration<Orders>
         .Property(ex => ex.CommentForDelivery)
         .HasColumnType("text");
 
+        builder
+        .HasOne(ex => ex.Status)
+        .WithMany(ex => ex.OrdersWithThisStatus)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.StatusId)
+        .OnDelete(DeleteBehavior.SetNull);
+
+        builder
+        .HasMany(ex => ex.OrderElements)
+        .WithOne(ex => ex.Order)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.OrderId)
+        .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

@@ -19,10 +19,11 @@ public class Orders
 
     public int AddresId { get; private set; }
     public int FeedBackId { get; private set; }
+    public int StatusId { get; private set; }
 
     public Customers Customer { get; private set; }
     public List<OrderLists> OrderElements { get; private set; }
     public OrderFeedbacks Feedback { get; private set; }
     public Addreses Addres { get; private set; }
-
+    public OrderStatus Status { get; private set; }
 }

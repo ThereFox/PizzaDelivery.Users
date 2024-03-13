@@ -31,5 +31,46 @@ public class ProductConfiguration : IEntityTypeConfiguration<Products>
         builder
         .Property(ex => ex.Description)
         .HasColumnType("text");
+
+        builder
+        .Property(ex => ex.IsArchived)
+        .HasColumnType("boolean");
+
+        builder
+        .HasMany(ex => ex.Ingridients)
+        .WithOne(ex => ex.Product)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.ProductId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+        .HasMany(ex => ex.OrderLists)
+        .WithOne(ex => ex.Product)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.OrderId)
+        .OnDelete(DeleteBehavior.SetNull);
+
+        builder
+        .HasMany(ex => ex.ModificationForThisProductsInOrders)
+        .WithOne(ex => ex.Products)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.OrderId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+        .HasMany(ex => ex.AvaliableModification)
+        .WithOne(ex => ex.Product)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.ProductId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+        .HasMany(ex => ex.ProductImages)
+        .WithOne(ex => ex.Product)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.ProductId)
+        .OnDelete(DeleteBehavior.Cascade);
+        
+
     }
 }

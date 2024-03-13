@@ -36,5 +36,19 @@ public class AddresesConfiguration : IEntityTypeConfiguration<Addreses>
         .Property(ex => ex.Room)
         .HasColumnType("varchar");
 
+        builder
+        .HasMany(ex => ex.Orders)
+        .WithOne(ex => ex.Addres)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.AddresId)
+        .OnDelete(DeleteBehavior.SetNull);
+
+        builder
+        .HasMany(ex => ex.UsersWithThisAddresAsDefault)
+        .WithOne(ex => ex.DefaultAddres)
+        .HasPrincipalKey(ex => ex.Id)
+        .HasForeignKey(ex => ex.DefaultAddresId)
+        .OnDelete(DeleteBehavior.SetNull);
+
     }
 }

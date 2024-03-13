@@ -11,6 +11,7 @@ public class Products
     public int BaseWeight { get; private set; }
     public decimal BasePrice { get; private set; }
     public string Description { get; private set; }
+    public bool IsArchived { get; private set; }
 
     public List<ProductIngridients> Ingridients { get; private set; }
     public List<OrderLists> OrderLists { get; private set; }

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace PizzaDelivery.Domain.Entitys;
 
-public class Ingridient
+public class Customer
 {
-    public int Id { get; private set; }
-    public string Name { get; private set; }
+    public Guid Id { get; init; }
+    public string Name { get; set; }
+    public Phone Phone { get; init; }
 }

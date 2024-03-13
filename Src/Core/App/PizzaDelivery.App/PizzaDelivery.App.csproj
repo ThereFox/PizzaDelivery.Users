@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\PizzaDelivery.Domain\PizzaDelivery.Domain.csproj" />
     <ProjectReference Include="..\..\Common\PizzaDelivery.Common\PizzaDelivery.Common.csproj" />
   </ItemGroup>
 

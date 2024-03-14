@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ISTUTimeTable.Src.Core.Common;
 using PizzaDelivery.App.DTO;
 using PizzaDelivery.App.Interfaces;
 using PizzaDelivery.App.Interfaces.Tokens;
@@ -13,43 +8,116 @@ using PizzaDelivery.Src.Core.Common;
 
 namespace PizzaDelivery.Core.App.Service
 {
-    public class AuthService
+    public class TokenAuthService
     {
         private ITokensStore _tokensStore;
         private ICustomerStore _customerStore;
+        private IAuthDataStore _authDataStore;
         private ITokenChecker _checker;
         private ITokenGenerator _generator;
+        private IHashGetter _hashGetter;
 
-        public AuthService(
+        public TokenAuthService(
             ITokensStore TokenStore,
-            ICustomerStore CustomerStore)
+            ICustomerStore CustomerStore,
+            IAuthDataStore AuthDataStore,
+            ITokenChecker TokenChecker,
+            ITokenGenerator TokenGenerator,
+            IHashGetter HashGetter
+            )
         {
             _tokensStore = TokenStore;
             _customerStore = CustomerStore;
+            _authDataStore = AuthDataStore;
+            _checker = TokenChecker;
+            _generator = TokenGenerator;
+            _hashGetter = HashGetter;
         }
 
-        public Result Registrate(Customer customer, string password)
+        public async Task<Result> Registrate(CustomerRegistrateInfo registrateInfo)
         {
-            return Result.Sucsesfull();
-        }
+            var getCustomerWithThisPhoneResult = await _customerStore.GetByPhone(registrateInfo.Phone);
 
-        public async Result<Customer> AuthoriseByTokens(AuthBearer bearer)
-        {
-            var validationResult = await _checker.IsValidToken(bearer.AuthToken);
-
-            if(validationResult.IsSucsesfull == false)
+            if(getCustomerWithThisPhoneResult.IsSucsesfull)
             {
-                return Result.Failure(validationResult.ErrorInfo);
+                return Result.Failure(new Error("123", "this phone now busy"));
             }
 
-            var TokenAuthInfo = _checker.GetCustomerInfo(bearer.AuthToken);
+            var CreateCustomerResult = await _authDataStore.CreateCustomer(registrateInfo);
 
-
-            
+            return CreateCustomerResult;
         }
-        public Result<AuthBearer> Authorise(Phone phone, string password)
+        public async Task<Result<AuthBearer>> Authorise(Phone phone, string password)
         {
-            return Result.Failure<AuthBearer>(new Error("123", "error"));
+            if(password == null || password.Length == 0)
+            {
+                return Result.Failure<AuthBearer>(new Error("123", "password is null"));
+            }
+
+            var authoriseInfo = new CustomerAuthoriseInfo(phone, _hashGetter.GetHash(password));
+
+            var checkCustomerExistResult = await _authDataStore.HaveCustomer(authoriseInfo);
+
+            if(checkCustomerExistResult.IsSucsesfull == false)
+            {
+                return Result.Failure<AuthBearer>(checkCustomerExistResult.ErrorInfo);
+            }
+
+            var customer = await _customerStore.GetByPhone(phone);
+
+            var newTokens = _generator.Generate(new TokenContent() { CustomerId = customer.ResultValue.Id});
+            
+            _tokensStore.SaveToken(newTokens.RefreshToken, customer.ResultValue.Id);
+            
+            return Result.Sucsesfull(newTokens);
+        }
+        public async Task<Result<Customer>> AuthoriseByAuthToken(string authToken)
+        {
+            var GetCustomerInfoFromTokenResult = await _checker.GetCustomerInfoFromToken(authToken);
+
+            if(GetCustomerInfoFromTokenResult.IsSucsesfull == false)
+            {
+                return Result.Failure<Customer>(GetCustomerInfoFromTokenResult.ErrorInfo);
+            }
+
+            var GetCustomerResult = await _customerStore.GetById(GetCustomerInfoFromTokenResult.ResultValue.CustomerId);
+        
+            if(GetCustomerResult.IsSucsesfull == false)
+            {
+                return Result.Failure<Customer>(GetCustomerResult.ErrorInfo);
+            }
+
+            return Result.Sucsesfull<Customer>(GetCustomerResult.ResultValue);
+        }
+        public async Task<Result<AuthBearer>> RefreshTokens(string refreshToken)
+        {
+            var CheckTokenAliveResult = await _checker.IsRefreshTokenAlive(refreshToken);
+
+            if(CheckTokenAliveResult.IsSucsesfull == false)
+            {
+                return Result.Failure<AuthBearer>(CheckTokenAliveResult.ErrorInfo);
+            }
+
+            if(await _tokensStore.HaveToken(refreshToken) == false)
+            {
+                return Result.Failure<AuthBearer>(new Error("123", "Token dont have exist"));
+            }
+
+            var getRefreshTokenOwnerResult = await _tokensStore.GetOwner(refreshToken);
+
+            if(getRefreshTokenOwnerResult.IsSucsesfull == false)
+            {
+                return Result.Failure<AuthBearer>(new Error("123", "Token owner dont have exist"));
+            }
+
+            var tokenContent = new TokenContent() { CustomerId = getRefreshTokenOwnerResult.ResultValue.Id };
+
+            var newTokens = _generator.Generate(tokenContent);
+
+            _tokensStore.SaveToken(newTokens.RefreshToken, getRefreshTokenOwnerResult.ResultValue.Id);
+
+            return Result.Sucsesfull(newTokens);
+
         }
 
     }

@@ -7,5 +7,5 @@ namespace PizzaDelivery.App.DTO;
 
 public class TokenContent
 {
-    
+    public Guid CustomerId { get; set; }
 }

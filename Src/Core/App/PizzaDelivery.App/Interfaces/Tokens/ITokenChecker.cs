@@ -5,7 +5,6 @@ namespace PizzaDelivery.App.Interfaces.Tokens;
 
 public interface ITokenChecker
 {
-    public Task<Result> IsValidToken(string token);
-    public Task<Result<AuthTokenUserInfo>> GetCustomerInfo(string authBearer);
-
+    public Task<Result> IsRefreshTokenAlive(string refreshToken);
+    public Task<Result<AuthTokenUserInfo>> GetCustomerInfoFromToken(string authBearer);
 }

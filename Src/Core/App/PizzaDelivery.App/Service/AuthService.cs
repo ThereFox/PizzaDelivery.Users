@@ -10,12 +10,12 @@ namespace PizzaDelivery.Core.App.Service
 {
     public class TokenAuthService
     {
-        private ITokensStore _tokensStore;
-        private ICustomerStore _customerStore;
-        private IAuthDataStore _authDataStore;
-        private ITokenChecker _checker;
-        private ITokenGenerator _generator;
-        private IHashGetter _hashGetter;
+        private readonly ITokensStore _tokensStore;
+        private readonly ICustomerStore _customerStore;
+        private readonly IAuthDataStore _authDataStore;
+        private readonly ITokenChecker _checker;
+        private readonly ITokenGenerator _generator;
+        private readonly IHashGetter _hashGetter;
 
         public TokenAuthService(
             ITokensStore TokenStore,

@@ -18,4 +18,14 @@ public class Order
     public string Comment { get; set; }
     public OrderStatus Status { get; set; }
 
+    public int FullWeight
+    {
+        get => Products.Sum(ex => ex.FinalWeight);
+    }
+
+    public decimal FullPrice
+    {
+        get => Products.Sum(ex => ex.FinalPrice);
+    }
+
 }

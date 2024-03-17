@@ -217,4 +217,8 @@ public class JWTTokenReader : ITokenChecker
         return tokenEndOfLife.NumberDate > new NumericDate(DateTime.Now).NumberDate;
     }
 
+    public Task<Result> IsRefreshTokenAlive(string refreshToken)
+    {
+        throw new NotImplementedException();
+    }
 }

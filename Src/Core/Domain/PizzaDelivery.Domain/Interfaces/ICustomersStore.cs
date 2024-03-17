@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PizzaDelivery.Domain.Entitys;
+using PizzaDelivery.Src.Core.Common;
 
 namespace PizzaDelivery.DAL.Interfaces;
 
 public interface ICustomerStore
 {
-    public Customer GetById(Guid id);
-    public Customer GetByPhone(Phone phone);
+    public Task<Result<Customer>> GetById(Guid id);
+    public Task<Result<Customer>> GetByPhone(Phone phone);
 
-    public void Create(Customer customer, string Password);
-    public void Update(Customer customer);
+    public Task<Result> Update(Customer customer);
 }

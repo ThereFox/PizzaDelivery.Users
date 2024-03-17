@@ -9,5 +9,4 @@ public class Ingridient
 {
     public Guid Id { get; init; }
     public string Name { get; set; }
-    public bool IsSpicy { get; set; }
 }

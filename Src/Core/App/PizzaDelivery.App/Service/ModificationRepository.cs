@@ -7,6 +7,8 @@ namespace Src.Core.App.Service
 {
     public class ModificationRepository
     {
+        public Task Create(){}
+        public Task UpdateModification(){}
         
     }
 }

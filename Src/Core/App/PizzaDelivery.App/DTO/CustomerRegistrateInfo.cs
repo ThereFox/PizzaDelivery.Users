@@ -11,4 +11,11 @@ public class CustomerRegistrateInfo
     public Phone Phone {get; set;}
     public string Name { get; set; }
     public string Password { get; set; }
+
+    public CustomerRegistrateInfo(Phone phone, string name, string password)
+    {
+        Phone = phone;
+        Name = name;
+        Password = password;
+    }
 }

@@ -18,6 +18,11 @@ public class OrdersAvailabiality
     private const int MaxCookedProductAtMoment = 25;
     private const decimal MinOrderPrice = 500;
 
+    public OrdersAvailabiality(IOrderStore orderStore)
+    {
+        _ordersStore = orderStore;
+    }
+
     public async Task<Result> CanCreateOrder(Order order)
     {
         if(resolwingProductPriceMoreThatLower(order) == false)
@@ -73,8 +78,7 @@ public class OrdersAvailabiality
         return countOfCookingProductsInActiveOrders + countOfProductInResolvingOrder > MaxCookedProductAtMoment;
 
     }
-
-        private async Task<bool> haveTooManyAwaitedProductsWithUpdatedOrder(Order order)
+    private async Task<bool> haveTooManyAwaitedProductsWithUpdatedOrder(Order order)
     {
         var activeFiltr = new OrdersFiltr(null, null, [OrderStatus.Awaited]);
 

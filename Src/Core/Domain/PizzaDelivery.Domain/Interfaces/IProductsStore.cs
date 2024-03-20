@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PizzaDelivery.Domain.Entitys;
+using PizzaDelivery.Domain.Filtrs;
+using PizzaDelivery.Src.Core.Common;
 
 namespace PizzaDelivery.DAL.Interfaces;
 
 public interface IProductsStore
 {
-    public List<Product> GetFirstN(int n);
-    public List<Product> GetMostLikedN(int n);
-    public List<Product> GetMostDelivered(int n);
+    public Task<Result<Product>> GetById(Guid Id);
+    public Task<List<Product>> GetFirstNByFiltr(ProductsFiltr filtr, int n);
+    public Task<List<Product>> GetFirstNByFiltrWihtOrderingByIngridientContaining(ProductsFiltr filtr, int n);
+    public Task<List<Product>> GetMostLikedNWithFiltr(ProductsFiltr filtr, int n);
+    public Task<List<Product>> GetNMostDeliveredWithFiltr(ProductsFiltr filtr, int n);
 
-    public void AddProduct(Product product);
-    public void UpdateProduct(Product product);
-    public void DeleteProduct(int Id);
+    public Task<Result> AddProduct(Product product);
+    public Task<Result> UpdateProduct(Product product);
+    public Task<Result> DeleteProduct(int Id);
 
 }

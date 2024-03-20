@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PizzaDelivery.Domain.Entitys;
 using PizzaDelivery.Domain.Entitys.Order;
 using PizzaDelivery.Domain.Filtrs;
 using PizzaDelivery.Domain.Interfaces;
@@ -15,9 +10,13 @@ public class OrderService
 {
     private readonly OrdersAvailabiality _avaliability;
     private readonly IOrderStore _store;
-    public OrderService(IOrderStore orderStore)
+    
+    public OrderService(
+        IOrderStore orderStore
+        )
     {
         _store = orderStore;
+        _avaliability = new(orderStore);
     }
 
     public async Task<Result<IReadOnlyList<Order>>> GetOrdersForUser(Guid UserId)

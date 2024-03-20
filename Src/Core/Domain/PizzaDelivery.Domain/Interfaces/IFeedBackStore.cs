@@ -4,15 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using PizzaDelivery.Domain.Entitys;
 using PizzaDelivery.Domain.Entitys.Order;
+using PizzaDelivery.Src.Core.Common;
 
 namespace PizzaDelivery.Domain.Interfaces;
 
 public interface IFeedBackStore
 {
-    public List<Feedback> GetFeedbacksByDate(DateOnly date);
-    public int GetMiddleScoreByDate(DateOnly date);
-    public Order GetOrderByFeedbackId(Guid Id);
-    public Feedback GetFeedbackForOrderByOrderId(Guid id);
-    public void Update(Feedback feedback);
-    public void DeliteById(Guid Id);
+    public Task<List<Feedback>> GetByDate(DateOnly date);
+    public Task<Result<uint>> GetMiddleScoreByDate(DateOnly date);
+    public Task<Order> GetOrderByFeedbackId(Guid Id);
+    public Task<Feedback> GetByOrderId(Guid id);
+    public Task<List<Feedback>> GetLastN(int n);
+    public Task<List<Feedback>> GetNLowestByDate(DateOnly date, int n); 
+
+    public Task<List<Feedback>> GetByCreaterId(Guid Id);
+
+    public Task<Result> Update(Feedback feedback);
+    public Task<Result> DeliteById(Guid Id);
 }

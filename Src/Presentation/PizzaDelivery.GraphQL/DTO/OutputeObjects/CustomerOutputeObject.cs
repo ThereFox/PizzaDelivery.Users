@@ -7,7 +7,8 @@ namespace PizzaDelivery.GraphQL.DTO.OutputeObjects;
 
 public class CustomerOutputeObject
 {
-    public Guid Id { get; private set; }
-    public string Name { get; private set; }
-    public string PhoneNumber { get; private set; }
+    public Guid Id { get; init; }
+    public string Name { get; init; }
+    public string PhoneNumber { get; init; }
+    
 }

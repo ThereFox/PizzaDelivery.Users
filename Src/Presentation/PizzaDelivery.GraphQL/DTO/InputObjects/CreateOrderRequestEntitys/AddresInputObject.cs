@@ -9,14 +9,14 @@ namespace PizzaDelivery.GraphQL.DTO.InputObjects.CreateOrderRequestEntitys;
 public class AddresInputObject
 {
     [GraphQLNonNullType]
-    public string City { get; private set; }
+    public string City { get; init; }
 
     [GraphQLNonNullType]
-    public string Street { get; private set; }
+    public string Street { get; init; }
 
     [GraphQLNonNullType]
-    public string HouseNumber { get; private set; }
+    public string HouseNumber { get; init; }
 
-    public string RoomNumber { get; private set; }
+    public string RoomNumber { get; init; }
 
 }

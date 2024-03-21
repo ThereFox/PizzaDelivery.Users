@@ -7,7 +7,7 @@ namespace PizzaDelivery.GraphQL.DTO.OutputeObjects;
 
 public class FeedbackOutputeObject
 {
-    public int Score { get; private set; }
-    public string Message { get; private set; }
+    public int Score { get; init; }
+    public string Message { get; init; }
     public OrderOutputeObject OrderInfo { get; private set; }
 }

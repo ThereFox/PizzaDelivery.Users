@@ -16,6 +16,9 @@ public class AddProductRequest
     public decimal Price { get; private set;}
     
     [GraphQLNonNullType]
+    public string Name { get; private set; }
+
+    [GraphQLNonNullType]
     public string Description { get; private set; }
     
     public bool IsStartInArchive { get; private set; } = true;

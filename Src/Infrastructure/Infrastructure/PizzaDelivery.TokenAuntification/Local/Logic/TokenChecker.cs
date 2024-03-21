@@ -43,7 +43,7 @@ public class JWTTokenReader : ITokenChecker
         return Result.Sucsesfull<AuthTokenUserInfo>(new AuthTokenUserInfo() { CustomerId = getTokenPayloadResult.ResultValue.UserId});
 
     }
-    public async Task<Result> RefreshTokenAlive(string refreshToken)
+    public async Task<Result> IsRefreshTokenAlive(string refreshToken)
     {
         if(refreshToken == null || refreshToken.Length == 0)
         {
@@ -215,10 +215,5 @@ public class JWTTokenReader : ITokenChecker
     private bool IsTokenDead(NumericDate tokenEndOfLife)
     {
         return tokenEndOfLife.NumberDate > new NumericDate(DateTime.Now).NumberDate;
-    }
-
-    public Task<Result> IsRefreshTokenAlive(string refreshToken)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -1,3 +1,5 @@
+using PizzaDelivery.App.Interfaces.Service;
+using PizzaDelivery.DAL.Interfaces;
 using PizzaDelivery.Domain.Entitys.Order;
 using PizzaDelivery.Domain.Filtrs;
 using PizzaDelivery.Domain.Interfaces;
@@ -10,13 +12,19 @@ public class OrderService
 {
     private readonly OrdersAvailabiality _avaliability;
     private readonly IOrderStore _store;
+    private readonly ICurrentCustomerInfoGetter _currentService;
+    private readonly ICustomerStore _customerStore;
     
     public OrderService(
-        IOrderStore orderStore
+        IOrderStore orderStore,
+        ICurrentCustomerInfoGetter currentService,
+        ICustomerStore customerStore
         )
     {
         _store = orderStore;
         _avaliability = new(orderStore);
+        _currentService = currentService;
+        _customerStore = customerStore;
     }
 
     public async Task<Result<IReadOnlyList<Order>>> GetOrdersForUser(Guid UserId)
@@ -104,7 +112,7 @@ public class OrderService
         return Result.Sucsesfull((float)complitedCount / (float)allEndedCount);
     }
 
-    public async Task<Result> Create(Order order)
+    public async Task<Result> CreateOrderFromCurrentUser(Order order)
     {
         var checkCreateOrderAvaliability = await _avaliability.CanCreateOrder(order);
 
@@ -112,6 +120,17 @@ public class OrderService
         {
             return Result.Failure(checkCreateOrderAvaliability.ErrorInfo);
         }
+
+        var tokenUserInfo = _currentService.Get();
+
+        var getUserByIdResult = await _customerStore.GetById(tokenUserInfo.CustomerId);
+
+        if(getUserByIdResult.IsSucsesfull == false)
+        {
+            throw new InvalidDataException("authed user not found");
+        }
+
+        order.Customer = getUserByIdResult.ResultValue;
 
         var createOrderResult = await _store.Create(order);
 
@@ -121,6 +140,38 @@ public class OrderService
         }
         return Result.Sucsesfull();
 
+    }
+
+    public async Task<Result> UpdateOwnedOrder(Order order)
+    {
+        var UserId = _currentService.Get().CustomerId;
+
+        var getCustomerResult = await _customerStore.GetById(UserId);
+
+        if(getCustomerResult.IsSucsesfull == false)
+        {
+            throw new InvalidCastException("authedUser dont exist");
+        }
+
+        if(getCustomerResult.ResultValue.Id != order.Customer.Id)
+        {
+            return Result.Failure(new Error("123", "its not owner"));
+        }
+
+        var checkOrderChangeAvaliability = await _avaliability.AvaliabelOrder(order);
+
+        if(checkOrderChangeAvaliability.IsSucsesfull == false)
+        {
+            return Result.Failure(checkOrderChangeAvaliability.ErrorInfo);
+        }
+
+        var updateOrderResult = await _store.Update(order);
+
+        if(updateOrderResult.IsSucsesfull == false)
+        {
+            return Result.Failure(updateOrderResult.ErrorInfo);
+        }
+        return Result.Sucsesfull();
     }
 
     public async Task<Result> Update(Order order)
@@ -143,16 +194,40 @@ public class OrderService
 
     public async Task<Result> CloseById(Guid Id)
     {
+        var getOrderResult = await _store.GetById(Id);
+
+        if(getOrderResult.IsSucsesfull == false)
+        {
+            return Result.Failure(new Error("123", "dont have order"));
+        }
+
         var changeStateResult = await _store.ChangeState(Id, OrderStatus.Canceled);
 
-        if(changeStateResult.IsSucsesfull == false)
+        return changeStateResult;
+    }
+    public async Task<Result> CloseOwnerById(Guid Id)
+    {
+        var userAuthInfo = _currentService.Get();
+        var getUserResult = await _customerStore.GetById(userAuthInfo.CustomerId);
+
+        if(getUserResult.IsSucsesfull == false)
         {
-            //log
+            throw new InvalidDataException("authed user dont have exist");
         }
-        else
+
+        var getOrderResult = await _store.GetById(Id);
+
+        if(getOrderResult.IsSucsesfull == false)
         {
-            //log
+            return Result.Failure(new Error("123", "dont have order"));
         }
+
+        if(getOrderResult.ResultValue.Customer.Id != getUserResult.ResultValue.Id)
+        {
+            return Result.Failure(new Error("123", "is not owner"));
+        }
+
+        var changeStateResult = await _store.ChangeState(Id, OrderStatus.Canceled);
 
         return changeStateResult;
     }
@@ -176,5 +251,4 @@ public class OrderService
 
     }
     
-
 }

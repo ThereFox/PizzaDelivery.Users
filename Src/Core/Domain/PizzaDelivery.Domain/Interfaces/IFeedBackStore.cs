@@ -11,7 +11,7 @@ namespace PizzaDelivery.Domain.Interfaces;
 public interface IFeedBackStore
 {
     public Task<List<Feedback>> GetByDate(DateOnly date);
-    public Task<Result<uint>> GetMiddleScoreByDate(DateOnly date);
+    public Task<Result<int>> GetMiddleScoreByDate(DateOnly date);
     public Task<Order> GetOrderByFeedbackId(Guid Id);
     public Task<Feedback> GetByOrderId(Guid id);
     public Task<List<Feedback>> GetLastN(int n);
@@ -19,6 +19,7 @@ public interface IFeedBackStore
 
     public Task<List<Feedback>> GetByCreaterId(Guid Id);
 
+    public Task<Result> AddToOrder(Guid orderId, Feedback feedback);
     public Task<Result> Update(Feedback feedback);
     public Task<Result> DeliteById(Guid Id);
 }

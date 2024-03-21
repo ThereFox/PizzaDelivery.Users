@@ -8,6 +8,7 @@ namespace PizzaDelivery.Domain.Entitys;
 public class Product
 {
     public Guid Id { get; set; }
+    public string Name { get; set; }
     public Dictionary<Ingridient, int> ContainingIngridientsWeight { get; set; }
     public List<Modification> AvaliableModification { get; set; }
     public int Weight { get; set; }

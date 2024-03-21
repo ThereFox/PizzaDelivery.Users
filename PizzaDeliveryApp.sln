@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{87841987-E30
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaDelivery.App", "Src\Core\App\PizzaDelivery.App\PizzaDelivery.App.csproj", "{EF9A7787-38D6-45D7-A361-DF194661822C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaDeliveryApp.DAL", "Src\Infrastructure\Persistense\PizzaDeliveryApp.DAL\PizzaDeliveryApp.DAL.csproj", "{0F2D66B1-E396-4F73-836F-4C864BAAFE64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{67856DCC-BCD0-4B94-80F0-EE35E4ED3765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67856DCC-BCD0-4B94-80F0-EE35E4ED3765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67856DCC-BCD0-4B94-80F0-EE35E4ED3765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F2D66B1-E396-4F73-836F-4C864BAAFE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F2D66B1-E396-4F73-836F-4C864BAAFE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F2D66B1-E396-4F73-836F-4C864BAAFE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F2D66B1-E396-4F73-836F-4C864BAAFE64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,7 +99,7 @@ Global
 		{F02B69C9-F339-4E7C-AC83-035E71E9C79C} = {985E6AF1-0FBD-465E-8CA6-9F1E17EFF8D7}
 		{87841987-E30F-4B75-847A-2B3367F131A2} = {E0C9F97B-43AC-454A-982B-615C7423D500}
 		{EF9A7787-38D6-45D7-A361-DF194661822C} = {87841987-E30F-4B75-847A-2B3367F131A2}
-		{67856DCC-BCD0-4B94-80F0-EE35E4ED3765} = {E0C9F97B-43AC-454A-982B-615C7423D500}
+		{0F2D66B1-E396-4F73-836F-4C864BAAFE64} = {C1C7B9D3-6880-42C1-B74E-CC4D7787F164}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A46A0271-E880-4543-8463-F620F2269980}

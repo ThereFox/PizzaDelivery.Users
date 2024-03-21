@@ -23,7 +23,12 @@ namespace Src.Core.App.Service
             _current = currentService;
             _customerStore = customerStore;
         }
+        public async Task<Result<Customer>> GetById(Guid id)
+        {
+            var getCustomerResult = await _customerStore.GetById(id);
 
+            return getCustomerResult;
+        }
         public async Task<Customer> GetInfoByCurrentUser()
         {
             var authInfo = _current.Get();

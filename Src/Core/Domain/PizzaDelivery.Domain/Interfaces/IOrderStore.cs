@@ -10,6 +10,8 @@ namespace PizzaDelivery.Domain.Interfaces;
 
 public interface IOrderStore
 {
+    public Task<Result<Order>> GetById(Guid id);
+
     public Task<IReadOnlyList<Order>> GetByFiltr(OrdersFiltr filtr);
 
     public Task<Result<decimal>> GetMaxOrderPriceByFiltr(OrdersFiltr filtr);

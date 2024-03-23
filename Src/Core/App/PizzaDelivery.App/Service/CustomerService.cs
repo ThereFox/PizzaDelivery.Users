@@ -29,25 +29,35 @@ namespace Src.Core.App.Service
 
             return getCustomerResult;
         }
-        public async Task<Customer> GetInfoByCurrentUser()
+        public async Task<Result<Customer>> GetInfoByCurrentUser()
         {
             var authInfo = _current.Get();
 
-            var getCustomerResult = await _customerStore.GetById(authInfo.CustomerId);
+            if(authInfo.IsSucsesfull == false)
+            {
+                return Result.Failure<Customer>(new Error("123", "user dont have auth"));
+            }
+
+            var getCustomerResult = await _customerStore.GetById(authInfo.ResultValue.CustomerId);
 
             if(getCustomerResult.IsSucsesfull == false)
             {
-                throw new Exception("authed user cannot be getted");
+                return Result.Failure<Customer>(new Error("123", "authed user cannot be getted"));
             }
 
-            return getCustomerResult.ResultValue;
+            return Result.Sucsesfull(getCustomerResult.ResultValue);
 
         }
         public async Task<Result<Address>> GetMostUsableAddresForCurrentUser()
         {
-            var authInfo = _current.Get();
+            var getAuthInfoResult = _current.Get();
 
-            var getAddresResult = await _customerStore.GetMostUseableAddresForUser(authInfo.CustomerId);
+            if(getAuthInfoResult.IsSucsesfull == false)
+            {
+                return Result.Failure<Address>(getAuthInfoResult.ErrorInfo);
+            }
+
+            var getAddresResult = await _customerStore.GetMostUseableAddresForUser(getAuthInfoResult.ResultValue.CustomerId);
 
             if(getAddresResult.IsSucsesfull == false)
             {

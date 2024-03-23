@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using HotChocolate.Types;
 using PizzaDelivery.App.Interfaces.Service;
 using PizzaDelivery.App.Service;
@@ -8,6 +9,8 @@ using PizzaDelivery.GraphQL.Auth.Attributes;
 using PizzaDelivery.GraphQL.DTO;
 using PizzaDelivery.GraphQL.DTO.OutputeObjects;
 using Src.Core.App.Service;
+
+using Result = PizzaDelivery.Src.Core.Common.Result;
 
 namespace PizzaDelivery.GraphQL;
 
@@ -40,7 +43,14 @@ public class Query
     [CustomerAuthorise]
     public async Task<CustomerOutputeObject> GetCurrentUserInfo()
     {
-        var getCurrentCustomer = await _customers.GetInfoByCurrentUser();
+        var getCurrentCustomerResult = await _customers.GetInfoByCurrentUser();
+
+        if(getCurrentCustomerResult.IsSucsesfull == false)
+        {
+            throw new Exception("user dont auth");
+        }
+
+        var getCurrentCustomer = getCurrentCustomerResult.ResultValue;
 
         return new CustomerOutputeObject()
         {
@@ -49,7 +59,7 @@ public class Query
             PhoneNumber = getCurrentCustomer.Phone.Number
         };
     }
-    
+
     [AdminAuthorise]
     [Error<Exception>]
     public async Task<CustomerOutputeObject> GetUserInfo(Guid id)

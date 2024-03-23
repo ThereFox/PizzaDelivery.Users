@@ -42,7 +42,7 @@ public class OrdersAvailabiality
     {
         if(resolwingProductPriceMoreThatLower(order) == false)
         {
-            return Result.Failure(new Error("123", "prise low that mir order price"));
+            return Result.Failure(new Error("123", "prise low that midl order price"));
         }
 
         if(await haveTooManyAwaitedProductsWithUpdatedOrder(order) == false)

@@ -12,6 +12,8 @@ using PizzaDelivery.Domain.Entitys.Order;
 using PizzaDelivery.App.Interfaces.Service;
 using PizzaDelivery.GraphQL.DTO.InputObjects.CreateOrderRequestEntitys;
 
+using Result = PizzaDelivery.Src.Core.Common.Result;
+
 namespace PizzaDelivery.GraphQL;
 
 public class Mutation

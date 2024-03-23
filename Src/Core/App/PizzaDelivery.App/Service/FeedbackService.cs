@@ -29,20 +29,27 @@ public class FeedbackService
         _orderStore = orderStore;
     }
 
-    public async Task<List<Feedback>> GetForCurrentUser()
+    public async Task<Result<List<Feedback>>> GetForCurrentUser()
     {
-        var userId = _current.Get().CustomerId;
+        var getCustomerAuthInfoResult = _current.Get();
+
+        if(getCustomerAuthInfoResult.IsSucsesfull == false)
+        {
+            return Result.Failure<List<Feedback>>(getCustomerAuthInfoResult.ErrorInfo);
+        }
+
+        var userId = getCustomerAuthInfoResult.ResultValue.CustomerId;
 
         var getCustomerResult = await _customerStore.GetById(userId); 
 
         if(getCustomerResult.IsSucsesfull == false)
         {
-            throw new InvalidCastException("authed data uncurrect");
+            return Result.Failure<List<Feedback>>(getCustomerResult.ErrorInfo);
         }
 
         var feedbacksFromUser = await _feedBackStore.GetByCreaterId(userId);
 
-        return feedbacksFromUser;
+        return Result.Sucsesfull(feedbacksFromUser);
     }
 
     public async Task<List<Feedback>> GetLastNFeedback(int n)
@@ -78,12 +85,18 @@ public class FeedbackService
             return Result.Failure(new Error("123", "dont have order"));
         }
         
-        var currentUserInfo = _current.Get();
-        var currentUserResult = await _customerStore.GetById(currentUserInfo.CustomerId);
+        var getCurrentUserInfoResult = _current.Get();
+
+        if(getCurrentUserInfoResult.IsSucsesfull == false)
+        {
+            return Result.Failure(getCurrentUserInfoResult.ErrorInfo);
+        }
+
+        var currentUserResult = await _customerStore.GetById(getCurrentUserInfoResult.ResultValue.CustomerId);
 
         if(currentUserResult.IsSucsesfull == false)
         {
-            throw new InvalidDataException("authed user dont have exist");
+            return Result.Failure(new Error("123", "authed user dont have exist"));
         }
 
         if(getOrderResult.ResultValue.Id != currentUserResult.ResultValue.Id)

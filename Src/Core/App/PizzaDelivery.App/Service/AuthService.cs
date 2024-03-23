@@ -73,7 +73,7 @@ namespace PizzaDelivery.Core.App.Service
         }
         public async Task<Result<Customer>> AuthoriseByAuthToken(string authToken)
         {
-            var GetCustomerInfoFromTokenResult = await _checker.GetCustomerInfoFromToken(authToken);
+            var GetCustomerInfoFromTokenResult = _checker.GetCustomerInfoFromToken(authToken);
 
             if(GetCustomerInfoFromTokenResult.IsSucsesfull == false)
             {
@@ -91,7 +91,7 @@ namespace PizzaDelivery.Core.App.Service
         }
         public async Task<Result<AuthBearer>> RefreshTokens(string refreshToken)
         {
-            var CheckTokenAliveResult = await _checker.IsRefreshTokenAlive(refreshToken);
+            var CheckTokenAliveResult = _checker.IsRefreshTokenAlive(refreshToken);
 
             if(CheckTokenAliveResult.IsSucsesfull == false)
             {

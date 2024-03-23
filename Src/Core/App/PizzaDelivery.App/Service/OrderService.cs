@@ -121,9 +121,14 @@ public class OrderService
             return Result.Failure(checkCreateOrderAvaliability.ErrorInfo);
         }
 
-        var tokenUserInfo = _currentService.Get();
+        var getTokenUserInfoResult = _currentService.Get();
 
-        var getUserByIdResult = await _customerStore.GetById(tokenUserInfo.CustomerId);
+        if(getTokenUserInfoResult.IsSucsesfull == false)
+        {
+            return Result.Failure(getTokenUserInfoResult.ErrorInfo);
+        }
+
+        var getUserByIdResult = await _customerStore.GetById(getTokenUserInfoResult.ResultValue.CustomerId);
 
         if(getUserByIdResult.IsSucsesfull == false)
         {
@@ -144,7 +149,14 @@ public class OrderService
 
     public async Task<Result> UpdateOwnedOrder(Order order)
     {
-        var UserId = _currentService.Get().CustomerId;
+        var getUserAuthInfoResult = _currentService.Get();
+
+        if(getUserAuthInfoResult.IsSucsesfull == false)
+        {
+            return Result.Failure(getUserAuthInfoResult.ErrorInfo);
+        }
+
+        var UserId = getUserAuthInfoResult.ResultValue.CustomerId;
 
         var getCustomerResult = await _customerStore.GetById(UserId);
 
@@ -207,8 +219,14 @@ public class OrderService
     }
     public async Task<Result> CloseOwnerById(Guid Id)
     {
-        var userAuthInfo = _currentService.Get();
-        var getUserResult = await _customerStore.GetById(userAuthInfo.CustomerId);
+        var getUserAuthInfoResult = _currentService.Get();
+
+        if(getUserAuthInfoResult.IsSucsesfull == false)
+        {
+            return Result.Failure(getUserAuthInfoResult.ErrorInfo);
+        }
+
+        var getUserResult = await _customerStore.GetById(getUserAuthInfoResult.ResultValue.CustomerId);
 
         if(getUserResult.IsSucsesfull == false)
         {

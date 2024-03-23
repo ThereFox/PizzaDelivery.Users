@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 using PizzaDelivery.App.DTO;
 using PizzaDelivery.Src.Core.Common;
 
+using Result = PizzaDelivery.Src.Core.Common.Result;
+
 namespace PizzaDelivery.GraphQL.Auth.Service;
 
 public class TokenPouchService

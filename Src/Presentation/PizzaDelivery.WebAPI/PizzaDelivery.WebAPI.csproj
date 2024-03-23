@@ -7,18 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate" Version="13.9.0" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PizzaDelivery.GraphQL\PizzaDelivery.GraphQL.csproj" />
     <ProjectReference Include="..\..\Core\Domain\PizzaDelivery.Domain\PizzaDelivery.Domain.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Persistense\PizzaDelivery.DAL\PizzaDelivery.DAL.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\PizzaDelivery.TokenAuntification\PizzaDelivery.TokenAuntification.csproj" />
     <ProjectReference Include="..\..\Core\App\PizzaDelivery.App\PizzaDelivery.App.csproj" />
     <ProjectReference Include="..\..\Core\Common\PizzaDelivery.Common\PizzaDelivery.Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Persistense\PizzaDeliveryApp.DAL\PizzaDelivery.DAL.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure\PizzaDelivery.SequreAlghoritms\PizzaDelivery.SequreAlghoritms.csproj" />
   </ItemGroup>
 
 

@@ -22,7 +22,7 @@ public class JWTTokenReader : ITokenChecker
         _encoder = new HMACSHA256();
     }
 
-    public async Task<Result<AuthTokenUserInfo>> GetCustomerInfoFromToken(string authBearer)
+    public Result<AuthTokenUserInfo> GetCustomerInfoFromToken(string authBearer)
     {
         if(authBearer == null || authBearer.Length == 0)
         {
@@ -43,7 +43,7 @@ public class JWTTokenReader : ITokenChecker
         return Result.Sucsesfull<AuthTokenUserInfo>(new AuthTokenUserInfo() { CustomerId = getTokenPayloadResult.ResultValue.UserId});
 
     }
-    public async Task<Result> IsRefreshTokenAlive(string refreshToken)
+    public Result IsRefreshTokenAlive(string refreshToken)
     {
         if(refreshToken == null || refreshToken.Length == 0)
         {

@@ -1,3 +1,4 @@
+using HotChocolate.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaDelivery.App.Interfaces.Service;
 using PizzaDelivery.GraphQL.Auth.Service;
@@ -10,12 +11,14 @@ public static class DI
     {        
         provider.AddAuthorization();
 
+
         provider
             .AddGraphQLServer()
             .AddAuthorizationCore()
             .AddAuthorizationHandler<AuthHandler>()
             .AddQueryType<Query>()
-            .AddMutationType<Mutation>();
+            .AddMutationType<Mutation>()
+            .ModifyRequestOptions(ex => ex.IncludeExceptionDetails = true);
 
         provider.AddTransient<ICurrentCustomerInfoGetter, WebCurrentCustomerInfoGetter>();
 

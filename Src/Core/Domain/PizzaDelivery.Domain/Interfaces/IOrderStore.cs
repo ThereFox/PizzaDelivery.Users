@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PizzaDelivery.Domain.Entitys.Order;
+using Domain.Ordering;
 using PizzaDelivery.Domain.Filtrs;
 using PizzaDelivery.Src.Core.Common;
 
@@ -24,7 +24,5 @@ public interface IOrderStore
     public Task<Result> Create(Order order);
 
     public Task<Result> Update(Order order);
-
-    public Task<Result> ChangeState(Guid guid, OrderStatus newStatus);
     
 }

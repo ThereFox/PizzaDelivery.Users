@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PizzaDelivery.Domain.Entitys;
+using Domain.Ordering;
 using PizzaDelivery.Src.Core.Common;
 
 namespace PizzaDelivery.Domain.Interfaces;

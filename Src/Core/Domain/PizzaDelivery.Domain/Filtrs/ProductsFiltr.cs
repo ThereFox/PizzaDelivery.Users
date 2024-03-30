@@ -7,6 +7,5 @@ namespace PizzaDelivery.Domain.Filtrs;
 
 public record ProductsFiltr
 (
-    IEnumerable<Guid> Ingridients,
-    ArchiveFiltrationVariant MixingVariant
+    IEnumerable<Guid> Ingridients
 );
